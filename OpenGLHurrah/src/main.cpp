@@ -5,14 +5,14 @@
 #include <GLFW/glfw3.h>
 
 
-const char* vertShaderSource = "#version 330 core\n"
+std::string vertShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos; \n"
 "void main()\n"
 "{\n"
 "	gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1,0);\n"
 " }\0";
 
-const char* fragShaderSource = "#version 330 core\n"
+std::string fragShaderSource = "#version 330 core\n"
 "out vec4 fragColor;\n"
 "void main()\n"
 "{\n"
@@ -20,26 +20,47 @@ const char* fragShaderSource = "#version 330 core\n"
 "}\0";
 
 
-unsigned int loadShader(GLenum type, const char* shaderSrc) {
+static unsigned int loadShader(GLenum type, const GLchar* shaderSrc) {
 	unsigned int shader;
 	int compiled;
 	shader = glCreateShader(type);
 	if (shader == 0) return 0;
 	glShaderSource(shader, 1, &shaderSrc, NULL);
 	glCompileShader(shader);
-	//TODO compile status check
+
+	int result;
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
+	if (result == GL_FALSE) {
+		int length;
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
+		char* msg = (char*)_malloca(length* sizeof(char));
+		glGetShaderInfoLog(shader, length, &length, msg);
+		std::cout << "Failed to compile "<<(type == GL_VERTEX_SHADER? "vertex" : "fragment")<< " shader."<< std::endl;
+		std::cout << msg << std::endl;
+		glDeleteShader(shader);
+		return 0;
+	}
 	return shader;
 }
 
-unsigned int bindShader(unsigned int& vertShader, unsigned int& fragShader) {
+static unsigned int bindShader(unsigned int& vertShader, unsigned int& fragShader) {
 	unsigned int shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram, vertShader);
 	glAttachShader(shaderProgram, fragShader);
 	glLinkProgram(shaderProgram);
+	glValidateProgram(shaderProgram);
 	//TODO link status check
 	glDeleteShader(vertShader);
 	glDeleteShader(fragShader);
 	return shaderProgram;
+}
+
+static int createShader(const std::string& vertexShader, const std::string& fragmentShader) {
+	unsigned int vertexShaderId = loadShader(GL_VERTEX_SHADER, vertexShader.c_str());
+	unsigned int fragmentShaderId = loadShader(GL_FRAGMENT_SHADER, fragmentShader.c_str());
+	unsigned int program = bindShader(vertexShaderId, fragmentShaderId);
+	return program;
+
 }
 
 int main(void)
@@ -65,10 +86,7 @@ int main(void)
 		1.0f, 0.0f, 0.0f
 	};
 
-	unsigned int vertShader = loadShader(GL_VERTEX_SHADER, vertShaderSource);
-	unsigned int fragShader = loadShader(GL_FRAGMENT_SHADER, fragShaderSource);
-
-	unsigned int shaderProgram = bindShader(vertShader, fragShader);
+	unsigned int shaderProgram = createShader(vertShaderSource, fragShaderSource);
 
 	unsigned int vbo, vao;
 	glGenVertexArrays(1, &vao);
