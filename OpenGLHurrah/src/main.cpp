@@ -65,6 +65,7 @@ static int createShader(const std::string& vertexShader, const std::string& frag
 
 int main(void)
 {
+	std::cout << "Hey I made this tiny log lol" << std::endl;
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
