@@ -1,7 +1,8 @@
-﻿  ShaderProgram.cpp
-  main.cpp
-C:\Users\valentin.dimitrov\source\repos\OpenGLHurrah2\OpenGLHurrah\OpenGLHurrah\src\main.cpp(25,6): warning C4101: 'compiled': unreferenced local variable
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(1016,5): warning MSB8027: Two or more files with the name of ShaderProgram.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are src\ShaderProgram.cpp, src\ShaderProgram.cpp.
+  ShaderProgram.cpp
+  ShaderProgram.cpp
   Generating Code...
-  LINK : C:\Users\valentin.dimitrov\source\repos\OpenGLHurrah2\OpenGLHurrah\x64\Debug\OpenGLHurrah.exe not found or not built by the last incremental link; performing full link
+  LINK : D:\ALL PROGRAMMING STUFF\OpenGLHurrah\x64\Debug\OpenGLHurrah.exe not found or not built by the last incremental link; performing full link
+x64\Debug\ShaderProgram.obj : warning LNK4042: object specified more than once; extras ignored
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  OpenGLHurrah.vcxproj -> C:\Users\valentin.dimitrov\source\repos\OpenGLHurrah2\OpenGLHurrah\x64\Debug\OpenGLHurrah.exe
+  OpenGLHurrah.vcxproj -> D:\ALL PROGRAMMING STUFF\OpenGLHurrah\x64\Debug\OpenGLHurrah.exe

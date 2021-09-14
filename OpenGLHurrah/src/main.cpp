@@ -1,23 +1,20 @@
-
 #include <iostream>
 #include <glm.hpp>
 #include <GL/glew.h>
+#include <fstream>
+#include <string>
+#include <sstream>
 #include <GLFW/glfw3.h>
 
-
-std::string vertShaderSource = "#version 330 core\n"
-"layout (location = 0) in vec3 aPos; \n"
-"void main()\n"
-"{\n"
-"	gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1,0);\n"
-" }\0";
-
-std::string fragShaderSource = "#version 330 core\n"
-"out vec4 fragColor;\n"
-"void main()\n"
-"{\n"
-"	fragColor = vec4(0.0f, 0.5f, 0.2f, 1.0f);\n"
-"}\0";
+static void parseShaderSource(const std::string& vertexShaderSource, const std::string& fragmentShaderSource) {
+	std::ifstream stream(vertexShaderSource);
+	//TODO path error checking
+	std::string line;
+	std::stringstream strStream;
+	while (getline(stream, line)) {
+				
+	}
+}
 
 
 static unsigned int loadShader(GLenum type, const GLchar* shaderSrc) {
