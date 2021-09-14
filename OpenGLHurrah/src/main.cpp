@@ -49,7 +49,23 @@ static unsigned int bindShader(unsigned int& vertShader, unsigned int& fragShade
 	glAttachShader(shaderProgram, fragShader);
 	glLinkProgram(shaderProgram);
 	glValidateProgram(shaderProgram);
-	//TODO link status check
+	
+	int result;
+	glGetShaderiv(shaderProgram, GL_LINK_STATUS, &result);
+	if (result == GL_FALSE) {
+		int length;
+		glGetShaderiv(shaderProgram, GL_INFO_LOG_LENGTH, &length);
+		char* msg = (char*)_malloca(length* sizeof(char));
+		glGetShaderInfoLog(shaderProgram, length, &length, msg);
+		std::cout << "Failed to link program" << std::endl;
+		std::cout << msg << std::endl;
+
+		glDeleteShader(vertShader);
+		glDeleteShader(fragShader);
+		glDeleteProgram(shaderProgram);
+		return 0;
+	}
+
 	glDeleteShader(vertShader);
 	glDeleteShader(fragShader);
 	return shaderProgram;

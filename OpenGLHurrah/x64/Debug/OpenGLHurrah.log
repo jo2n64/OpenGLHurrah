@@ -1,4 +1,7 @@
-﻿  main.cpp
-D:\ALL PROGRAMMING STUFF\OpenGLHurrah\OpenGLHurrah\src\main.cpp(25,6): warning C4101: 'compiled': unreferenced local variable
+﻿  ShaderProgram.cpp
+  main.cpp
+C:\Users\valentin.dimitrov\source\repos\OpenGLHurrah2\OpenGLHurrah\OpenGLHurrah\src\main.cpp(25,6): warning C4101: 'compiled': unreferenced local variable
+  Generating Code...
+  LINK : C:\Users\valentin.dimitrov\source\repos\OpenGLHurrah2\OpenGLHurrah\x64\Debug\OpenGLHurrah.exe not found or not built by the last incremental link; performing full link
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  OpenGLHurrah.vcxproj -> D:\ALL PROGRAMMING STUFF\OpenGLHurrah\x64\Debug\OpenGLHurrah.exe
+  OpenGLHurrah.vcxproj -> C:\Users\valentin.dimitrov\source\repos\OpenGLHurrah2\OpenGLHurrah\x64\Debug\OpenGLHurrah.exe

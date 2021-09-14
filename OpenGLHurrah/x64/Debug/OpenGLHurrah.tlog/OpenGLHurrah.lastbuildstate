@@ -1,2 +1,2 @@
-PlatformToolSet=v142:VCToolArchitecture=Native32Bit:VCToolsVersion=14.26.28801:TargetPlatformVersion=10.0.18362.0:VcpkgTriplet=x64-windows:
-Debug|x64|D:\ALL PROGRAMMING STUFF\OpenGLHurrah\|
+PlatformToolSet=v142:VCToolArchitecture=Native64Bit:VCToolsVersion=14.29.30133:TargetPlatformVersion=10.0.19041.0:
+Debug|x64|C:\Users\valentin.dimitrov\source\repos\OpenGLHurrah2\OpenGLHurrah\|
