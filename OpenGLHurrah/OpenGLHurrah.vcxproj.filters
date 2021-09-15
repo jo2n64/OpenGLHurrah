@@ -21,16 +21,18 @@
     <ClCompile Include="src\ShaderProgram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ShaderProgram.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="headers\ShaderProgram.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\ShaderProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\basic.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\shaders\basic.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

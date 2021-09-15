@@ -1,6 +1,9 @@
 #version 330 core
+
+uniform float time;
 out vec4 fragColor;
+
 void main()
 {
-	fragColor = vec4(0.0f, 0.5f, 0.2f, 1.0f);
+	fragColor = vec4(1-time, time, 1-time, 1.0f);
 }

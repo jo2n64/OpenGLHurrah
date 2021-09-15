@@ -6,14 +6,16 @@
 #include <sstream>
 #include <GLFW/glfw3.h>
 
-static void parseShaderSource(const std::string& vertexShaderSource, const std::string& fragmentShaderSource) {
-	std::ifstream stream(vertexShaderSource);
+static std::string parseShaderSource(const std::string& shaderSource) {
+	std::ifstream stream(shaderSource);
 	//TODO path error checking
 	std::string line;
 	std::stringstream strStream;
 	while (getline(stream, line)) {
-				
+		strStream << line << '\n';
 	}
+	std::cout << "Shader loaded:\n" << strStream.str() << std::endl;
+	return strStream.str();
 }
 
 
@@ -100,6 +102,8 @@ int main(void)
 		1.0f, 0.0f, 0.0f
 	};
 
+	std::string vertShaderSource = parseShaderSource("res/shaders/basic.vert");
+	std::string fragShaderSource = parseShaderSource("res/shaders/basic.frag");
 	unsigned int shaderProgram = createShader(vertShaderSource, fragShaderSource);
 
 	unsigned int vbo, vao;
@@ -116,10 +120,13 @@ int main(void)
 	glBindVertexArray(0);
 
 	glViewport(0, 0, width, height);
+	float time = 0.0f;
 
 	while (!glfwWindowShouldClose(window)) {
+		time = sin(glfwGetTime());
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+		glUniform1f(0, time);
 		glUseProgram(shaderProgram);
 		glBindVertexArray(vao);
 		glDrawArrays(GL_TRIANGLES, 0, 3);

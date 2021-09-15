@@ -152,12 +152,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\ShaderProgram.cpp" />
-    <ClCompile Include="src\ShaderProgram.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="headers\ShaderProgram.h" />
     <ClInclude Include="src\ShaderProgram.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\basic.frag" />
+    <None Include="res\shaders\basic.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
