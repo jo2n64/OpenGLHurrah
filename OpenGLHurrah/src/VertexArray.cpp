@@ -4,7 +4,6 @@
 VertexArray::VertexArray()
 {
 	glGenVertexArrays(1, &m_RendererID);
-	
 }
 
 VertexArray::~VertexArray()
@@ -14,6 +13,7 @@ VertexArray::~VertexArray()
 
 void VertexArray::addBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout)
 {
+	bind();
 	vb.bind();
 	const auto& elements = layout.getElements();
 	unsigned int offset = 0;

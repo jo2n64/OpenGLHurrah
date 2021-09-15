@@ -1,93 +1,13 @@
 #include <iostream>
 #include <glm.hpp>
 #include <GL/glew.h>
-#include <fstream>
-#include <string>
-#include <sstream>
 #include <GLFW/glfw3.h>
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "VertexBufferLayout.h"
+#include "VertexArray.h"
+#include "Shader.h"
 
-static std::string parseShaderSource(const std::string& shaderSource) {
-	std::ifstream stream(shaderSource);
-	//TODO path error checking
-	std::string line;
-	std::stringstream strStream;
-	while (getline(stream, line)) {
-		strStream << line << '\n';
-	}
-	std::cout << "Shader loaded:\n" << strStream.str() << std::endl;
-	return strStream.str();
-}
-
-static void glClearError() {
-	while (glGetError() != GL_NO_ERROR);
-}
-
-static void glCheckError() {
-	while (GLenum error = glGetError()) {
-		std::cout << "opengl error code" << error << std::endl;
-	}
-}
-
-static unsigned int loadShader(GLenum type, const GLchar* shaderSrc) {
-	unsigned int shader;
-	int compiled;
-	shader = glCreateShader(type);
-	if (shader == 0) return 0;
-	glShaderSource(shader, 1, &shaderSrc, NULL);
-	glCompileShader(shader);
-
-	int result;
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
-	if (result == GL_FALSE) {
-		int length;
-		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
-		char* msg = (char*)_malloca(length * sizeof(char));
-		glGetShaderInfoLog(shader, length, &length, msg);
-		std::cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << " shader." << std::endl;
-		std::cout << msg << std::endl;
-		glDeleteShader(shader);
-		return 0;
-	}
-	return shader;
-}
-
-static unsigned int bindShader(unsigned int& vertShader, unsigned int& fragShader) {
-	unsigned int shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertShader);
-	glAttachShader(shaderProgram, fragShader);
-	glLinkProgram(shaderProgram);
-	glValidateProgram(shaderProgram);
-
-	int result;
-	glGetShaderiv(shaderProgram, GL_LINK_STATUS, &result);
-	if (result == GL_FALSE) {
-		int length;
-		glGetShaderiv(shaderProgram, GL_INFO_LOG_LENGTH, &length);
-		char* msg = (char*)_malloca(length * sizeof(char));
-		glGetShaderInfoLog(shaderProgram, length, &length, msg);
-		std::cout << "Failed to link program" << std::endl;
-		std::cout << msg << std::endl;
-
-		glDeleteShader(vertShader);
-		glDeleteShader(fragShader);
-		glDeleteProgram(shaderProgram);
-		return 0;
-	}
-
-	glDeleteShader(vertShader);
-	glDeleteShader(fragShader);
-	return shaderProgram;
-}
-
-static int createShader(const std::string& vertexShader, const std::string& fragmentShader) {
-	unsigned int vertexShaderId = loadShader(GL_VERTEX_SHADER, vertexShader.c_str());
-	unsigned int fragmentShaderId = loadShader(GL_FRAGMENT_SHADER, fragmentShader.c_str());
-	unsigned int program = bindShader(vertexShaderId, fragmentShaderId);
-	return program;
-
-}
 
 int main(void)
 {
@@ -117,28 +37,20 @@ int main(void)
 		1,2,3
 	};
 
-	std::string vertShaderSource = parseShaderSource("res/shaders/basic.vert");
-	std::string fragShaderSource = parseShaderSource("res/shaders/basic.frag");
-	unsigned int shaderProgram = createShader(vertShaderSource, fragShaderSource);
+	Shader sampleShader("res/shaders/basic.vert", "res/shaders/basic.frag");
 
-	//TODO abstracting the buffers into classes doesnt work for now...
-	unsigned int vao;
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-
+	VertexArray va;
 	VertexBuffer vbo(vertices, sizeof(vertices));
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
+	VertexBufferLayout layout;
+	layout.push<float>(3);
+	va.addBuffer(vbo, layout);
+
 	IndexBuffer ibo(indices, 6);
 
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
-
-
-	glUseProgram(shaderProgram);
+	sampleShader.useProgram();
+	va.bind();
 	ibo.bind();
-	glBindVertexArray(vao);
+
 	glViewport(0, 0, width, height);
 	float time = 0.0f;
 
@@ -151,11 +63,6 @@ int main(void)
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-
-	glDeleteVertexArrays(1, &vao);
-	
-	glDeleteProgram(shaderProgram);
-
 	glfwTerminate();
 	return 0;
 }
