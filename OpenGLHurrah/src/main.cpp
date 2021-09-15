@@ -5,6 +5,8 @@
 #include <string>
 #include <sstream>
 #include <GLFW/glfw3.h>
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
 
 static std::string parseShaderSource(const std::string& shaderSource) {
 	std::ifstream stream(shaderSource);
@@ -120,26 +122,22 @@ int main(void)
 	unsigned int shaderProgram = createShader(vertShaderSource, fragShaderSource);
 
 	//TODO abstracting the buffers into classes doesnt work for now...
-	unsigned int vao, vbo, ibo;
+	unsigned int vao;
 	glGenVertexArrays(1, &vao);
-	glGenBuffers(1, &vbo);
-	glGenBuffers(1, &ibo);
-
 	glBindVertexArray(vao);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
+	VertexBuffer vbo(vertices, sizeof(vertices));
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+	IndexBuffer ibo(indices, 6);
+
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
 
 	glUseProgram(shaderProgram);
+	ibo.bind();
 	glBindVertexArray(vao);
 	glViewport(0, 0, width, height);
 	float time = 0.0f;
@@ -155,8 +153,7 @@ int main(void)
 	}
 
 	glDeleteVertexArrays(1, &vao);
-	glDeleteBuffers(1, &vbo);
-	glDeleteBuffers(1, &ibo);
+	
 	glDeleteProgram(shaderProgram);
 
 	glfwTerminate();
